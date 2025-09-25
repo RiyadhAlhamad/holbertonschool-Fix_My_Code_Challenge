@@ -1,31 +1,9 @@
-###
-#
-#  Sort integer arguments (ascending) 
-#
-###
+#!/usr/bin/env ruby
+# Sort arguments numerically and print one per line
 
-result = []
-ARGV.each do |arg|
-    # skip if not integer
-    next if arg !~ /^-?[0-9]+$/
+# نأخذ فقط القيم التي هي أعداد صحيحة (بإشارة سالبة أو بدون)
+nums = ARGV.select { |arg| arg.match?(/\A-?\d+\z/) }
+           .map(&:to_i)
+           .sort
 
-    # convert to integer
-    i_arg = arg.to_i
-    
-    # insert result at the right position
-    is_inserted = false
-    i = 0
-    l = result.size
-    while !is_inserted && i < l do
-        if result[i] < i_arg
-            i += 1
-        else
-            result.insert(i - 1, i_arg)
-            is_inserted = true
-            break
-        end
-    end
-    result << i_arg if !is_inserted
-end
-
-puts result
+nums.each { |n| puts n }
