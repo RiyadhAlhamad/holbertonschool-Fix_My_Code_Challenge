@@ -1,3 +1,6 @@
+#include "lists.h"
+#include <stdlib.h>
+
 int delete_dnodeint_at_index(dlistint_t **head, unsigned int index)
 {
     dlistint_t *node;
@@ -14,11 +17,13 @@ int delete_dnodeint_at_index(dlistint_t **head, unsigned int index)
     if (node == NULL)
         return (-1);
 
-    /* اربط الجيران ثم حدّث الرأس عند الحاجة */
     if (node->prev)
         node->prev->next = node->next;
-    else
+    else {
         *head = node->next;
+        if (*head)
+            (*head)->prev = NULL;
+    }
 
     if (node->next)
         node->next->prev = node->prev;
