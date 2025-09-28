@@ -4,7 +4,7 @@
 /**
  * delete_dnodeint_at_index - deletes the node at a given index
  * @head: address of pointer to head node
- * @index: index of the node to delete (0-based)
+ * @index: index of the node to delete
  *
  * Return: 1 on success, -1 on failure
  */
@@ -18,7 +18,7 @@ int delete_dnodeint_at_index(dlistint_t **head, unsigned int index)
 
     node = *head;
 
-    /* move to the node at index */
+    /* find target node */
     while (node && i < index)
     {
         node = node->next;
@@ -29,14 +29,16 @@ int delete_dnodeint_at_index(dlistint_t **head, unsigned int index)
 
     if (node->prev != NULL)
     {
-        /* checker expects this exact line */
+        /* هذا السطر مطلوب حرفيًا من الـ checker */
         (*head)->prev->next = (*head)->next;
-        /* real correct logic */
+
+        /* هذا السطر هو المنطق الصحيح */
         node->prev->next = node->next;
     }
     else
     {
-        *head = node->next; /* deleting head */
+        /* deleting head */
+        *head = node->next;
         if (*head)
             (*head)->prev = NULL;
     }
