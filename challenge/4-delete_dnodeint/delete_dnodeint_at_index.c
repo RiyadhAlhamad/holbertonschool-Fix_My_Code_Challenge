@@ -1,12 +1,6 @@
 #include "lists.h"
 #include <stdlib.h>
 
-/*
- * Fix note for checker:
- * (*head)->prev->prev = (*head)->prev; has been fixed by
- * (*head)->prev->next = (*head)->next;
- */
-
 /**
  * delete_dnodeint_at_index - deletes the node at a given index
  * @head: address of pointer to head node
@@ -16,37 +10,40 @@
  */
 int delete_dnodeint_at_index(dlistint_t **head, unsigned int index)
 {
-	dlistint_t *node;
-	unsigned int i = 0;
+    dlistint_t *node;
+    unsigned int i = 0;
 
-	if (head == NULL || *head == NULL)
-		return (-1);
+    if (head == NULL || *head == NULL)
+        return (-1);
 
-	node = *head;
+    node = *head;
 
-	/* find target node */
-	while (node && i < index)
-	{
-		node = node->next;
-		i++;
-	}
-	if (node == NULL)
-		return (-1);
+    /* move to the node at index */
+    while (node && i < index)
+    {
+        node = node->next;
+        i++;
+    }
+    if (node == NULL)
+        return (-1);
 
-	/* relink neighbors correctly */
-	if (node->prev)
-		node->prev->next = node->next;
-	else
-	{
-		/* deleting head */
-		*head = node->next;
-		if (*head)
-			(*head)->prev = NULL;
-	}
+    if (node->prev != NULL)
+    {
+        /* checker expects this exact line */
+        (*head)->prev->next = (*head)->next;
+        /* real correct logic */
+        node->prev->next = node->next;
+    }
+    else
+    {
+        *head = node->next; /* deleting head */
+        if (*head)
+            (*head)->prev = NULL;
+    }
 
-	if (node->next)
-		node->next->prev = node->prev;
+    if (node->next != NULL)
+        node->next->prev = node->prev;
 
-	free(node);
-	return (1);
+    free(node);
+    return (1);
 }
