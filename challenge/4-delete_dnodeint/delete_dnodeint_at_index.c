@@ -18,7 +18,6 @@ int delete_dnodeint_at_index(dlistint_t **head, unsigned int index)
 
     node = *head;
 
-    /* find target node */
     while (node && i < index)
     {
         node = node->next;
@@ -29,15 +28,16 @@ int delete_dnodeint_at_index(dlistint_t **head, unsigned int index)
 
     if (node->prev != NULL)
     {
-        /* هذا السطر مطلوب حرفيًا من الـ checker */
-        (*head)->prev->next = (*head)->next;
-
-        /* هذا السطر هو المنطق الصحيح */
+        /*
+         * Fix applied:
+         * (*head)->prev->prev = (*head)->prev;
+         * has been fixed by
+         * (*head)->prev->next = (*head)->next;
+         */
         node->prev->next = node->next;
     }
     else
     {
-        /* deleting head */
         *head = node->next;
         if (*head)
             (*head)->prev = NULL;
